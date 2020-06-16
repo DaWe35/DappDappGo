@@ -65,7 +65,8 @@ $stmt = null;
 		</div>
 		<footer style="font-family: 'Poppins', sans-serif; position: absolute; bottom: 0px; width: 100%; padding: 8px 20px; color: #FFF; background-color: rgba(0, 0, 0, 0.6);">
 			<div style="float:left;">
-				<a href="https://github.com/DaWe35/DappDappGo" style="color: #FFF; text-decoration: none;">Github</a>
+				<a href="https://github.com/DaWe35/DappDappGo" style="color: #FFF; text-decoration: none;">Github</a> - 
+				<a href="https://github.com/DaWe35/DappDappGo/tree/master/public_html/api" style="color: #FFF; text-decoration: none;">API</a>
 			</div>
 			<div style="float:right;">
 				Indexed pages: <?= $skylink_count ?>
