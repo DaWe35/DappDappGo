@@ -202,6 +202,7 @@ def get_data_from_duckduckgo():
 	options.add_argument('allow-elevated-browser')
 	options.add_argument("window-size=800,600")
 	options.add_argument("--mute-audio")
+	options.add_argument('--no-sandbox')
 	#if (len(argv) <= 1 or argv[1] != 'display'):
 	options.headless = True
 	browser = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=options)
