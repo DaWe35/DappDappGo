@@ -31,7 +31,7 @@ def create_thumbnail(skypath, dl_portal):
 	# convert to thumbnail image
 	im.thumbnail((200, 200), Image.ANTIALIAS)
 	script_dir = os.path.dirname(os.path.abspath(__file__))
-	imgpath = os.path.join(script_dir, 'web', 'thumbnails', skypath + ".jpg")
+	imgpath = os.path.join(script_dir, 'public_html', 'thumbnails', skypath + ".jpg")
 	im = im.convert("RGB")
 	im.save(imgpath, "JPEG")
 
