@@ -96,20 +96,21 @@ if (!$exe) {
 			</form>
 			<div style="background-color: #F7FAFC; max-width: 790px; margin: auto; margin-top: 50px; border-radius: 10px; padding: 30px;"> <?php
 				while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+					$title = !empty($row['title']) ? $row['title'] : $row['filename'];
 					$type = str_replace('; charset=utf-8', '', $row['content-type']);
 					?>
 					<div class="result"> <?php
 						if (substr($row['content-type'], 0, 5) == 'image') { ?>
 							<div style="display: inline-block; margin-right: 10px; max-width: 200px; vertical-align: top;">
 								<a href="<?= $portal . $row['skypath'] ?>">
-									<img src="thumbnails/<?= $row['skypath'] ?>.jpg" alt="<?= $row['title'] ?>" />
+									<img src="thumbnails/<?= $row['skypath'] ?>.jpg" alt="<?= $title ?>" />
 								</a>
 							</div>
 							
 							<div style="display: inline-block; max-width: 456px;"> <?php
 						} ?>
 								<a href="<?= $portal . $row['skypath'] ?>">
-									<h3 class="title"> <?= $row['title'] ?> </h3>
+									<h3 class="title"> <?= $title ?> </h3>
 								</a>
 								<p class="info">
 									<img class="info-favicon m-10-5" src="https://siasky.net/favicon-32x32.png" alt="Skynet favicon" />
