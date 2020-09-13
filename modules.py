@@ -140,9 +140,12 @@ def update_text_in_db(skypath, text, title, description):
 
 	sql = "UPDATE skylinks SET title=%s, content=%s, description=%s, lastupdate=%s WHERE skypath = %s"
 	val = (title[0:255], text[0:65533], description[0:255], now, skypath)
-	mycursor.execute(sql, val)
-	mydb.commit()
-	return mycursor.rowcount
+	try:
+		mycursor.execute(sql, val)
+		mydb.commit()
+		return mycursor.rowcount
+	except:
+		return false
 
 def get_skylinks_to_update():
 	old_doc_time = int(time.time()) - 6000
