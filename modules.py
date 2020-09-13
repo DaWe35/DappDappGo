@@ -145,7 +145,7 @@ def update_text_in_db(skypath, text, title, description):
 		mydb.commit()
 		return mycursor.rowcount
 	except:
-		return false
+		return False
 
 def get_skylinks_to_update():
 	old_doc_time = int(time.time()) - 6000
