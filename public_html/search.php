@@ -8,6 +8,10 @@ if ($_GET['q'] == 'getrandom') {
 	$query = "SELECT title, skypath, filename, description, `content-type`, `content-length` FROM skylinks WHERE title IS NOT NULL ORDER BY RAND() LIMIT 30";
 	$stmt = $db->prepare($query);
 	$exe = $stmt->execute();
+} else if ($_GET['q'] == 'latest') {
+	$query = "SELECT title, skypath, filename, description, `content-type`, `content-length` FROM skylinks WHERE title IS NOT NULL ORDER BY insertion_date DESC LIMIT 50";
+	$stmt = $db->prepare($query);
+	$exe = $stmt->execute();
 } else {
 	$query = "SELECT title, skypath, filename, description, `content-type`, `content-length` FROM skylinks WHERE title IS NOT NULL AND (MATCH(title, `filename`, content) AGAINST(? IN NATURAL LANGUAGE MODE) OR skypath = ?) LIMIT 100";
 	$stmt = $db->prepare($query);
