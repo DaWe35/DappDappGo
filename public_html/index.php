@@ -62,7 +62,7 @@ $stmt = null;
 					</div>
 				</div>
 				<p style="text-align: center;">
-					Show the <a href="/search.php?q=latest" style="color: #000;">latest</a> or get some <a href="/search.php?q=random" style="color: #000;">random</a>
+					Show the <a href="/search.php?q=latest" style="color: #000;">latest</a> or get some <a href="/search.php?q=getrandom" style="color: #000;">random</a>
 				</p>
 			</form>
 		</div>
