@@ -1,17 +1,17 @@
 import modules
-dl_portal = 'https://skyportal.xyz/'
+dl_portal = 'https://siasky.net/'
 
 skynet_portals = modules.get_skynet_portals()
 
 urls = []
 urls += modules.exact_urls_from_page("https://skynethub-api.herokuapp.com/skapps?limit=100")
-print('collected', len(urls), 'urls')
+print('collected', len(urls), 'urls from SkynetHub')
 urls += modules.get_data_from_duckduckgo()
-print('collected', len(urls), 'urls')
+print('collected', len(urls), 'urls from DuckDuckGo')
 
 urls += modules.exact_urls_from_google()
 	
-print('collected', len(urls), 'urls')
+print('collected', len(urls), 'urls from Google')
 print(urls)
 
 for url in urls:
