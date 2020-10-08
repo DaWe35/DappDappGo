@@ -2,15 +2,14 @@
 require('config.php');
 require('model/init.php');
 
-$stmt = $db->prepare("SELECT count(title) as count FROM skylinks WHERE 1");
+$stmt = $db->prepare("SELECT count(title) as title, count(skypath) as skypath  FROM skylinks WHERE 1");
 if (!$stmt->execute()) {
     exit('Database error');
 }
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
-$skylink_count = $row['count'];
-$stmt = null;
-
-?>
+$indexed_count = $row['title'];
+$skypath_count = $row['skypath'];
+$stmt = null; ?>
 <html>
 	<head>
 		<title>DappDappGo search engine</title>
@@ -72,7 +71,7 @@ $stmt = null;
 				<a href="https://github.com/DaWe35/DappDappGo/tree/master/public_html/api" style="color: #FFF; text-decoration: none;">API</a>
 			</div>
 			<div style="float:right;">
-				Indexed pages: <?= $skylink_count ?>
+				Indexed pages: <?= $indexed_count ?>/<?= $skypath_count ?>
 			</div>
 
 		</footer>
