@@ -130,7 +130,7 @@ def update_headers_in_db(skypath, headers):
 		return False
 
 	sql = "UPDATE skylinks SET filename=%s, filedate=%s, `content-type`=%s, `content-length`=%s WHERE skypath = %s"
-	val = (filename, filedate, headers['Content-Type'], headers['Content-Length'], skypath)
+	val = (filename[0:127], filedate, headers['Content-Type'][0:31], headers['Content-Length'], skypath)
 	mycursor.execute(sql, val)
 	mydb.commit()
 	return mycursor.rowcount
@@ -149,7 +149,7 @@ def update_text_in_db(skypath, text, title, description, type_):
 
 def get_skylinks_to_update():
 	old_doc_time = int(time.time()) - 2592000 # 30 days
-	
+
 	sql = "SELECT * FROM skylinks WHERE lastupdate < " + str(old_doc_time) + " OR lastupdate IS NULL"
 
 	mycursor.execute(sql)
