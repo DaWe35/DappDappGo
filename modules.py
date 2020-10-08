@@ -135,11 +135,11 @@ def update_headers_in_db(skypath, headers):
 	mydb.commit()
 	return mycursor.rowcount
 
-def update_text_in_db(skypath, text, title, description):
+def update_text_in_db(skypath, text, title, description, type_):
 	now = int(time.time())
 
-	sql = "UPDATE skylinks SET title=%s, content=%s, description=%s, lastupdate=%s WHERE skypath = %s"
-	val = (title[0:255], text[0:65533], description[0:255], now, skypath)
+	sql = "UPDATE skylinks SET title=%s, content=%s, description=%s, type=%s, lastupdate=%s WHERE skypath = %s"
+	val = (title[0:255], text[0:65533], description[0:255], type_, now, skypath)
 	try:
 		mycursor.execute(sql, val)
 		mydb.commit()
@@ -148,9 +148,10 @@ def update_text_in_db(skypath, text, title, description):
 		return False
 
 def get_skylinks_to_update():
-	old_doc_time = int(time.time()) - 6000
-
+	old_doc_time = int(time.time()) - 2592000 # 30 days
+	
 	sql = "SELECT * FROM skylinks WHERE lastupdate < " + str(old_doc_time) + " OR lastupdate IS NULL"
+
 	mycursor.execute(sql)
 
 	return mycursor.fetchall()
@@ -170,7 +171,7 @@ def get_text_from_file(url, header):
 		return False
 
 	headers = {
-		'User-Agent': 'DappDappGo header crawler'
+		'User-Agent': 'DappDappGo content crawler'
 	}
 	req = requests.get(url, headers=headers)
 
@@ -184,6 +185,11 @@ def get_text_from_file(url, header):
 		if not description or description == '':
 			description = html_text[0:255]
 		return { "text": html_text, "title": title, "description": description, "contenttype": header['Content-Type'] }
+	elif header['Content-Type'].startswith('application/json'):
+		html_text = req.text
+		title = json.loads(header['Skynet-File-Metadata'])['filename']
+		description = html_text[0:255]
+		return { "text": html_text, "title": title, "description": description, "contenttype": header['Content-Type'] }
 	else:
 		filename = json.loads(header['Skynet-File-Metadata'])['filename']
 		return { "text": filename, "title": filename, "description": filename, "contenttype": header['Content-Type'] }
@@ -193,6 +199,24 @@ def get_text_from_file(url, header):
 def signal_handler(sig, frame):
 	browser.quit()
 	exit(0)
+
+	
+
+
+def get_type_from_text(text, contenttype):
+	if contenttype == 'text/html' and "== Last Updated ==" in text:
+		return 'Wiki archive'
+	elif contenttype == 'application/json':
+		try:
+			jdata = json.loads(text)
+			if jdata['format'] == 'skygallery':
+				return 'SkyGallery'
+		except:
+			pass
+
+	return 'NULL'
+
+				
 
 def get_data_from_duckduckgo():
 	from selenium import webdriver
