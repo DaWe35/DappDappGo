@@ -5,15 +5,15 @@ include('model/converter.php');
 $portal = 'https://siasky.net/';
 
 if ($_GET['q'] == 'getrandom') {
-	$query = "SELECT title, skypath, filename, description, `content-type`, `content-length` FROM skylinks WHERE title IS NOT NULL ORDER BY RAND() LIMIT 30";
+	$query = "SELECT title, skypath, filename, description, type, `content-type`, `content-length` FROM skylinks WHERE title IS NOT NULL ORDER BY RAND() LIMIT 30";
 	$stmt = $db->prepare($query);
 	$exe = $stmt->execute();
 } else if ($_GET['q'] == 'latest') {
-	$query = "SELECT title, skypath, filename, description, `content-type`, `content-length` FROM skylinks WHERE title IS NOT NULL ORDER BY insertion_date DESC LIMIT 50";
+	$query = "SELECT title, skypath, filename, description, type, `content-type`, `content-length` FROM skylinks WHERE title IS NOT NULL ORDER BY insertion_date DESC LIMIT 50";
 	$stmt = $db->prepare($query);
 	$exe = $stmt->execute();
 } else {
-	$query = "SELECT title, skypath, filename, description, `content-type`, `content-length` FROM skylinks WHERE title IS NOT NULL AND (MATCH(title, `filename`, content) AGAINST(? IN NATURAL LANGUAGE MODE) OR skypath = ?) LIMIT 100";
+	$query = "SELECT title, skypath, filename, description, type, `content-type`, `content-length` FROM skylinks WHERE title IS NOT NULL AND (MATCH(title, `filename`, content) AGAINST(? IN NATURAL LANGUAGE MODE) OR skypath = ?) LIMIT 100";
 	$stmt = $db->prepare($query);
 	$exe = $stmt->execute([$_GET['q'], $_GET['q']]);
 }
@@ -101,8 +101,11 @@ if (!$exe) {
 			<div style="background-color: #F7FAFC; max-width: 790px; margin: auto; margin-top: 50px; border-radius: 10px; padding: 30px;"> <?php
 				while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 					$title = !empty($row['title']) ? $row['title'] : $row['filename'];
-					$type = str_replace('; charset=utf-8', '', $row['content-type']);
-					?>
+					if ($row['type'] != 'NULL') {
+						$type = $row['type'];
+					} else {
+						$type = str_replace('; charset=utf-8', '', $row['content-type']);
+					} ?>
 					<div class="result"> <?php
 						if (substr($row['content-type'], 0, 5) == 'image') { ?>
 							<div style="display: inline-block; margin-right: 10px; max-width: 200px; vertical-align: top;">
